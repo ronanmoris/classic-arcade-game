@@ -9,7 +9,7 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
+ * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
 
@@ -20,8 +20,8 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        canvas = doc.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
+        canvas = doc.createElement("canvas"),
+        ctx = canvas.getContext("2d"),
         lastTime;
 
     canvas.width = 505;
@@ -107,19 +107,20 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                "images/water-block.png", // Top row is water
+                "images/stone-block.png", // Row 1 of 3 of stone
+                "images/stone-block.png", // Row 2 of 3 of stone
+                "images/stone-block.png", // Row 3 of 3 of stone
+                "images/grass-block.png", // Row 1 of 2 of grass
+                "images/grass-block.png" // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
-            row, col;
-        
+            row,
+            col;
+
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -134,7 +135,11 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(
+                    Resources.get(rowImages[row]),
+                    col * 101,
+                    row * 83
+                );
             }
         }
 
@@ -169,11 +174,11 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
+        "images/stone-block.png",
+        "images/water-block.png",
+        "images/grass-block.png",
+        "images/enemy-bug.png",
+        "images/char-boy.png"
     ]);
     Resources.onReady(init);
 

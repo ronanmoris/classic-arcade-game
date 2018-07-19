@@ -20,11 +20,16 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
+
     //check for collision
-    if (Math.floor(this.x) == player.x && this.y == player.y) {
+    if (
+        this.x + 70 >= player.x &&
+        this.x <= player.x + 70 &&
+        this.y == player.y
+    ) {
         player.resetPosition();
     }
-    //when enemy out of screen put them back
+    //when enemies/vehicles are out of the screen put them back
     if (this.x > 500) {
         this.x = -100;
     }
@@ -54,41 +59,70 @@ class Player {
     }
     //brings player to the start position
     resetPosition() {
+        console.log("x 200");
         this.x = 200;
         this.y = 400;
     }
 
     //moves player in the board and doesn`t allow player to move out of it
     handleInput(key) {
-        console.log(this.y);
         //if player reaches the watter he/she wins
-        if (this.y === 40) {
+
+        switch (key) {
+            case "left": {
+                if (this.canMoveLeft()) this.x -= 101;
+                break;
+            }
+            case "up": {
+                if (this.canMoveUp()) this.y -= 83;
+                break;
+            }
+            case "right": {
+                if (this.canMoveRight()) this.x += 101;
+                break;
+            }
+            case "down": {
+                if (this.canMoveDown()) this.y += 83;
+                break;
+            }
+        }
+    }
+    canMoveLeft() {
+        return this.x > 0;
+    }
+    canMoveUp() {
+        return this.y > -50;
+    }
+    canMoveRight() {
+        return this.x < 400;
+    }
+    canMoveDown() {
+        return this.y < 400;
+    }
+    checkIfVictory() {
+        if (this.y < 68) {
             setTimeout(() => {
                 alert("Congratulations, you won!");
                 this.resetPosition();
             }, 250);
         }
-
-        key === "left" && this.x > 0
-            ? (this.x -= 101)
-            : key === "up" && this.y > -50
-                ? (this.y -= 83)
-                : key === "right" && this.x < 400
-                    ? (this.x += 101)
-                    : key === "down" && this.y < 400 ? (this.y += 83) : this.x;
     }
 }
 
+//create random speed for the enemies
 function randomSpeed() {
-    return Math.floor(Math.random() * 350);
+    return Math.floor(Math.random() * 300);
 }
 // Now instantiate your objects.
 const enemy1 = new Enemy(0, 68, randomSpeed());
-const enemy2 = new Enemy(-100, 151, randomSpeed());
-const enemy3 = new Enemy(-50, 234, randomSpeed());
+const enemy2 = new Enemy(-100, 68, randomSpeed());
+const enemy3 = new Enemy(-200, 151, randomSpeed());
+const enemy4 = new Enemy(-50, 151, randomSpeed());
+const enemy5 = new Enemy(-100, 234, randomSpeed());
+// const enemy6 = new Enemy(-250, 234, randomSpeed());
 
 // Place all enemy objects in an array called allEnemies
-allEnemies.push(enemy1, enemy2, enemy3);
+allEnemies.push(enemy1, enemy2, enemy3, enemy4, enemy5);
 
 // Place the player object in a variable called player
 const player = new Player(202, 400);
@@ -104,16 +138,5 @@ document.addEventListener("keyup", function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    player.checkIfVictory();
 });
-
-/*
-if (key === "left" && this.x > 0) {
-    this.x -= 101;
-} else if (key === "up" && this.y > -50) {
-    this.y -= 83;
-} else if (key === "right" && this.x < 400) {
-    this.x += 101;
-} else if (key === "down" && this.y < 400) {
-    this.y += 83;
-}
-*/
