@@ -4,6 +4,8 @@ To win the game, the player should escape the vehicles (bugs) and reach the wate
 
 ![Classic Arcade Game](./images/arcade-game.png?raw=true)
 
+<!-- ![Memory Game](./img/memory-game.png?raw=true) -->
+
 ## How to run the game in your machine
 
 1.  [Download](https://github.com/ronanmoris/classic-arcade-game) by clicking on the green button on the right (Clone or Download) or [Clone](https://github.com/ronanmoris/classic-arcade-game) the Repository.
