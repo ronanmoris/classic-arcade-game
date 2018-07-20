@@ -31,7 +31,7 @@ Enemy.prototype.update = function(dt) {
     }
     //when enemies/vehicles are out of the screen put them back
     if (this.x > 500) {
-        this.x = -100;
+        this.x = -800 - randomSpeed();
     }
 };
 
@@ -40,9 +40,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 class Player {
     constructor(x, y) {
         this.sprite = "images/char-boy.png";
@@ -50,24 +47,27 @@ class Player {
         this.y = y;
     }
 
+    //I didnt use the update function
     //Update the player's position
-    update() {}
+    // update() {}
 
     // Draw the player on the screen
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
     //brings player to the start position
     resetPosition() {
-        console.log("x 200");
         this.x = 200;
         this.y = 400;
+    }
+    //reload page
+    resetGame() {
+        window.location.reload(true);
     }
 
     //moves player in the board and doesn`t allow player to move out of it
     handleInput(key) {
-        //if player reaches the watter he/she wins
-
         switch (key) {
             case "left": {
                 if (this.canMoveLeft()) this.x -= 101;
@@ -87,42 +87,50 @@ class Player {
             }
         }
     }
+    //Player can only move left if not already at the end of the board
     canMoveLeft() {
         return this.x > 0;
     }
+    //Player can only move up if not already at the end of the board
     canMoveUp() {
-        return this.y > -50;
+        return this.y > -15;
     }
+    //Player can only move right if not already at the end of the board
     canMoveRight() {
         return this.x < 400;
     }
+    //Player can only move down if not already at the end of the board
     canMoveDown() {
         return this.y < 400;
     }
+
+    //if player reaches the watter he/she wins
     checkIfVictory() {
-        if (this.y < 68) {
+        if (this.y === -15) {
             setTimeout(() => {
                 alert("Congratulations, you won!");
-                this.resetPosition();
-            }, 250);
+                //after victory reset the game
+                this.resetGame();
+            }, 200);
         }
     }
 }
 
 //create random speed for the enemies
 function randomSpeed() {
-    return Math.floor(Math.random() * 300);
+    return Math.floor(Math.random() * 600);
 }
-// Now instantiate your objects.
+
+// Instantiating the enemies
 const enemy1 = new Enemy(0, 68, randomSpeed());
-const enemy2 = new Enemy(-100, 68, randomSpeed());
-const enemy3 = new Enemy(-200, 151, randomSpeed());
-const enemy4 = new Enemy(-50, 151, randomSpeed());
-const enemy5 = new Enemy(-100, 234, randomSpeed());
-// const enemy6 = new Enemy(-250, 234, randomSpeed());
+const enemy2 = new Enemy(-500, 68, randomSpeed());
+const enemy3 = new Enemy(-500, 151, randomSpeed());
+const enemy4 = new Enemy(-100, 151, randomSpeed());
+const enemy5 = new Enemy(-500, 234, randomSpeed());
+const enemy6 = new Enemy(-100, 234, randomSpeed());
 
 // Place all enemy objects in an array called allEnemies
-allEnemies.push(enemy1, enemy2, enemy3, enemy4, enemy5);
+allEnemies.push(enemy1, enemy2, enemy3, enemy4, enemy5, enemy6);
 
 // Place the player object in a variable called player
 const player = new Player(202, 400);
