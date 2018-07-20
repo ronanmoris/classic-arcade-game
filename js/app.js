@@ -1,72 +1,67 @@
 const allEnemies = [];
 
-// Enemies our player must avoid
-var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = "images/enemy-bug.png";
-};
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt;
-
-    //check for collision
-    if (
-        this.x + 70 >= player.x &&
-        this.x <= player.x + 70 &&
-        this.y == player.y
-    ) {
-        player.resetPosition();
-    }
-    //when enemies/vehicles are out of the screen put them back
-    if (this.x > 500) {
-        this.x = -800 - randomSpeed();
-    }
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-class Player {
+//superclass
+class Entities {
     constructor(x, y) {
-        this.sprite = "images/char-boy.png";
         this.x = x;
         this.y = y;
     }
 
-    //I didnt use the update function
-    //Update the player's position
-    // update() {}
-
-    // Draw the player on the screen
+    // Draw the entity on the screen, required method for game
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+
+// Enemies our player must avoid
+class Enemy extends Entities {
+    constructor(x, y, speed) {
+        super(x, y);
+        this.speed = speed;
+        this.sprite = "images/enemy-bug.png";
+    }
+
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+    update(dt) {
+        // multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+        this.x += this.speed * dt;
+        //check for collision
+        if (
+            this.x + 70 >= player.x &&
+            this.x <= player.x + 70 &&
+            this.y == player.y
+        ) {
+            player.resetPosition();
+        }
+        //when enemies/vehicles are out of the screen put them back
+        if (this.x > 500) {
+            this.x = -800 - randomSpeed();
+        }
+    }
+}
+
+class Player extends Entities {
+    constructor(x, y) {
+        super(x, y);
+        this.sprite = "images/char-boy.png";
+        this.initialX = x;
+        this.initialY = y;
     }
 
     //brings player to the start position
     resetPosition() {
-        this.x = 200;
-        this.y = 400;
+        this.x = this.initialX;
+        this.y = this.initialY;
     }
     //reload page
     resetGame() {
         window.location.reload(true);
     }
 
-    //moves player in the board and doesn`t allow player to move out of it
+    //moves player around the board and doesn`t allow player to move out of it
     handleInput(key) {
         switch (key) {
             case "left": {
@@ -135,8 +130,8 @@ allEnemies.push(enemy1, enemy2, enemy3, enemy4, enemy5, enemy6);
 // Place the player object in a variable called player
 const player = new Player(202, 400);
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens for key presses and sends the keys to the
+// Player.handleInput() method.
 document.addEventListener("keyup", function(e) {
     var allowedKeys = {
         37: "left",
